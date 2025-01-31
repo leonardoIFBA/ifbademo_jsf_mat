@@ -24,7 +24,8 @@
 		<h:form>
 			<p:growl showDetail="true" />
 
-			<p:panelGrid columns="2">
+			<p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-1,ui-grid-col-11"
+			styleClass="ui-panelgrid-blank ui-fluid" style="border:0px none; background-color:transparent;">
 				<p:outputLabel value="Nome:"/>
 				<p:inputText value="#{cadastroDepartamentoBean.departamento.nome}"/>
 			</p:panelGrid>
