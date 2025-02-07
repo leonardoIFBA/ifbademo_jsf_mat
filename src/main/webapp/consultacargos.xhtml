@@ -29,6 +29,10 @@ and open the template in the editor.
 					<h:outputText value="#{cargo.nome}" />
 				</p:column>
 
+				<p:column headerText="Departamento">
+					<h:outputText value="#{cargo.departamento.nome}" />
+				</p:column>
+
 				<p:column headerText="Ações">
 					<p:button title="Alterar" icon="pi pi-pencil" outcome="cadastrocargo">
 						<f:param name="id" value="#{cargo.id}" />
