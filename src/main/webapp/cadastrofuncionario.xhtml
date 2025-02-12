@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="WEB-INF/template/Layout.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value="#{cadastroFuncionarioBean.funcionario.id}" />
+		<f:viewAction action="#{cadastroFuncionarioBean.prepararCadastro()}" if="#{param.id ne null}" />
+	</f:metadata>
+
+	<ui:define name="titulo">
+		Cadastro de Funcionário
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="form">
+			<style>
+				button.ui-button {
+					margin-right: .5rem;
+				}
+			</style>
+
+			<!-- <p:messages id="messages" showDetail="true" closable="true">
+				<p:autoUpdate/>
+			</p:messages> -->
+
+			<p:growl id="growl" showDetail="false" />
+
+			<div class="card">
+				<p:row>
+					<h2>Dados Gerais</h2>
+				</p:row>
+				<p:panelGrid columns="4" columnClasses="ui-grid-col-1,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+					style="border:0px none; background-color:transparent;">
+
+					<p:outputLabel value="Nome" />
+					<p:inputText value="#{cadastroFuncionarioBean.funcionario.nome}" required="true"
+						requiredMessage="O campo NOME não pode ficar em branco" />
+
+					<p:outputLabel value="Salário" />
+					<p:inputNumber id="input2" value="#{cadastroFuncionarioBean.funcionario.salario}" symbol="R$ "
+						symbolPosition="p" decimalSeparator="," thousandSeparator="." required="true"
+						requiredMessage="O campo SALARIO não pode ficar em branco" />
+
+					<p:outputLabel value="Data Entrada" />
+					<p:calendar pattern="dd/MM/yyyy" value="#{cadastroFuncionarioBean.funcionario.dataEntrada}" required="true"
+						requiredMessage="O campo CIDADE não pode ficar em branco"/>
+
+					<p:outputLabel value="Data Saída" />
+					<p:calendar pattern="dd/MM/yyyy" value="#{cadastroFuncionarioBean.funcionario.dataSaida}" />
+
+					<p:outputLabel value="Cargo:" />
+					<p:selectOneMenu value="#{cadastroFuncionarioBean.funcionario.cargo}" converter="#{cargoConverter}"
+						required="true" requiredMessage="O campo Cargo não pode ficar em branco">
+						<f:selectItem itemLabel="Selecione" noSelectionOption="true" itemDisabled="true" />
+						<f:selectItems value="#{cadastroFuncionarioBean.todosCargos}" var="cargo" itemValue="#{cargo}"
+							itemLabel="#{cargo.nome}" />
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+
+			</div>
+
+
+			<div class="card">
+				<p:row>
+					<h2>Dados Endereço</h2>
+				</p:row>
+
+				<p:panelGrid columns="4" columnClasses="ui-grid-col-1,ui-grid-col-5,ui-grid-col-1,ui-grid-col-5"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+					style="border:0px none; background-color:transparent;" >
+					
+					<p:outputLabel value="Logradouro" />
+					<p:inputText value="#{cadastroFuncionarioBean.funcionario.endereco.logradouro}" required="true"
+						requiredMessage="O campo LOGRADOURO não pode ficar em branco" />
+
+					<p:outputLabel value="Complemento" />
+					<p:inputText value="#{cadastroFuncionarioBean.funcionario.endereco.complemento}" />
+
+					<p:outputLabel value="Número" />
+					<p:inputText value="#{cadastroFuncionarioBean.funcionario.endereco.numero}" required="true"
+						requiredMessage="O campo NUMERO não pode ficar em branco" />
+		
+					<p:outputLabel value="Bairro" />
+					<p:inputText value="#{cadastroFuncionarioBean.funcionario.endereco.bairro}" required="true"
+						requiredMessage="O campo BAIRRO não pode ficar em branco" />
+
+					<p:outputLabel value="Cidade" />
+					<p:inputText value="#{cadastroFuncionarioBean.funcionario.endereco.cidade}" required="true"
+						requiredMessage="O campo CIDADE não pode ficar em branco" />
+
+					<p:outputLabel value="UF" />
+					<p:selectOneMenu value="#{cadastroFuncionarioBean.funcionario.endereco.uf}" required="true"
+							requiredMessage="O campo UF não pode ficar em branco">
+						<f:selectItem itemLabel="Selecione" noSelectionOption="true" itemDisabled="true" />
+						<f:selectItems value="#{cadastroFuncionarioBean.ufs}" var="uf" itemValue="#{uf.sigla}"
+							itemLabel="#{uf.descricao}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="CEP" />
+					<p:inputText value="#{cadastroFuncionarioBean.funcionario.endereco.cep}" required="true"
+						requiredMessage="O campo CEP não pode ficar em branco" />
+
+				</p:panelGrid>
+			</div>
+
+			<p:commandButton value="Salvar  " actionListener="#{cadastroFuncionarioBean.salvar()}"
+						icon="pi pi-save"  process="@all" update="@form" />
+						
+			<p:button title="Cancelar" value="Cancelar" icon="pi pi-undo" outcome="consultafuncionarios" />
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

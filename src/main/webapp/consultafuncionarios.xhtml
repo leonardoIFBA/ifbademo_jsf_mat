@@ -13,37 +13,40 @@ and open the template in the editor.
 
 	<ui:define name="corpo">
 		<h:form>
-			<p:growl showDetail="true"/>
-
+			<p:growl id="messages" showDetail="true" />
+			
 			<p:toolbar>
 				<p:toolbarGroup>
-					<p:button icon="pi pi-plus" value="Novo" outcome="cadastrocargo"/>
+					<p:button icon="pi pi-plus" value="Novo" title="Novo" 
+					outcome="cadastrofuncionario" />
 				</p:toolbarGroup>
 			</p:toolbar>
 
-			<p:dataTable value="#{consultaFuncionarioBean.funcionarios}"
-			            var="funcionario"				
-						paginator="true" paginatorPosition="bottom">
+			<p:dataTable id="dt-funcionarios" widgetVar="dtFuncionarios" var="funcionario"
+				value="#{consultaFuncionarioBean.funcionarios}" reflow="true" 
+				styleClass="cargos-table" paginator="true"
+				rows="10" paginatorPosition="bottom"> 
 
-				<p:column headerText="Nome">
+				<p:column headerText="Name" >
 					<h:outputText value="#{funcionario.nome}" />
 				</p:column>
 
-				<p:column headerText="Salario">
+				<p:column headerText="Salário" >
 					<h:outputText value="#{funcionario.salario}" />
 				</p:column>
 
-				<p:column headerText="Data Entrada">
+				<p:column headerText="Data Entrada" sortBy="#{funcionario.dataEntrada}">
 					<h:outputText value="#{funcionario.dataEntrada}" />
 				</p:column>
 
-				<p:column headerText="Data Saída">
+				<p:column headerText="Data Saída"  sortBy="#{funcionario.dataSaida}">
 					<h:outputText value="#{funcionario.dataSaida}" />
+
 				</p:column>
 
-				<p:column headerText="Cargo">
-					<h:outputText value="#{funcionario.cargo.nome}" />
-				</p:column>
+				<!--<p:column headerText="Endereço" style="text-align: center">
+					<h:outputText value="#{funcionario.endereco.logradouro}"/>
+				</p:column> -->
 
 				<p:column headerText="Endereço" >
 					<p:commandButton icon="pi pi-eye" update="@form"
@@ -55,19 +58,25 @@ and open the template in the editor.
 					</p:commandButton>
 				</p:column>
 
+				<p:column headerText="Cargo" >
+					<h:outputText value="#{funcionario.cargo.nome}" />
+				</p:column>
+				
 				<p:column headerText="Ações">
-					<p:button title="Alterar" icon="pi pi-pencil" outcome="cadastrocargo">
+					<p:button icon="pi pi-pencil" title="Alterar" outcome="cadastrofuncionario">
 						<f:param name="id" value="#{funcionario.id}" />
 					</p:button>
-					<p:commandButton title="Excluir" icon="pi pi-trash"
-					       process="@this" oncomplete="PF('deleteDialog').show()">
-						<f:setPropertyActionListener value="#{cargo}"
-						      target="#{consultaFuncionarioBean.funcionarioSelecionado}" />
+
+					<p:commandButton icon="pi pi-trash" process="@this" 
+						oncomplete="PF('deleteFuncionarioDialog').show()">
+						<f:setPropertyActionListener value="#{funcionario}"
+							target="#{consultaFuncionarioBean.funcionarioSelecionado}" />
 					</p:commandButton>
 				</p:column>
-
 			</p:dataTable>
+		<!-- </h:form>
 
+		<h:form id="dialogs"> -->
 
 			<p:dialog header="Endereço Detalhes" showEffect="fade" modal="true" widgetVar="detalheEnderecoDialog"
 				responsive="true">
@@ -106,16 +115,19 @@ and open the template in the editor.
 				</f:facet>
 			</p:dialog> 
 
-
-			<!-- dependendo do botão clicado a ação é executanda -->
-			<p:confirmDialog widgetVar="deleteDialog" showEffect="fade" width="350"
+			<p:confirmDialog widgetVar="deleteFuncionarioDialog" showEffect="fade" width="350"
 				message="Exclusão de Funcionario?" header="Confirmação" severity="warn">
 				<p:commandButton value="Sim" icon="pi pi-check" actionListener="#{consultaFuncionarioBean.excluir()}"
-					process="@this" update="@form" oncomplete="PF('deleteDialog').hide()" />
+					process="@this" update="@form" oncomplete="PF('deleteFuncionarioDialog').hide()" />
 				<p:commandButton value="Não" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
-					process="@this" update="@form" onclick="PF('deleteDialog').hide()" />
+					process="@this" update="@form" onclick="PF('deleteFuncionarioDialog').hide()" />
 			</p:confirmDialog>
 
+			<p:confirmDialog global="true" showEffect="fade" width="300">
+				<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+					icon="pi pi-times" />
+			</p:confirmDialog>
 		</h:form>
 	</ui:define>
 </ui:composition>
